@@ -41,10 +41,13 @@ def load_key():
 def get_saved():
     cur = web_list.get(web_list.curselection())
     
+    key = load_key()
+    f = Fernet(key)
+    
     with open("data.json") as data_file:
         data = json.load(data_file)
         email = data[cur]["email"]
-        password = data[cur]["password"]
+        password = f.decrypt(data[cur]["password"]).decode()
         messagebox.showinfo(title=cur, message=f"Email: {email}\nPassword: {password}")
 
 
